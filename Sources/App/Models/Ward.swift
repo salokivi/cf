@@ -8,9 +8,14 @@
 import Vapor
 import FluentProvider
 import Fluent
+import Node
+
 //import HTTP
 
 final class Ward: Model {
+    
+    var id: Node?
+    
     var hisId: String
     var longName: String
     var phoneNumber: String
@@ -26,6 +31,47 @@ final class Ward: Model {
         location = try row.get("location")
         district = try row.get("district")
         address = try row.get("address")
+    }
+    
+   
+    
+//     NodeInitializable
+    init(node: Node, in context: Context) throws {
+        hisId = try node.get("hisId")
+        longName = try node.get("longname")
+        phoneNumber = try node.get("phoneNumber")
+        location = try node.get("location")
+        district = try node.get("district")
+        address = try node.get("address")
+    }
+    
+    
+//    init(node: Node, in context: Context) throws {
+//        hisId = try node.get("hisId")
+//        longName = try node.get("longname")
+//        phoneNumber = try node.get("phoneNumber")
+//        location = try node.get("location")
+//        district = try node.get("district")
+//        address = try node.get("address")
+//    }
+//        hisId = try node.extract("hisId")
+//        longName = try node.extract("longname")
+//        phoneNumber = try node.extract("phoneNumber")
+//        location = try node.extract("location")
+//        district = try node.extract("district")
+//        address = try node.extract("address")
+//    }
+
+    // NodeRepresentable
+    func makeNode(context: Context) throws -> Node {
+        return try Node(node: [
+            "id" : id,
+            "hisId" : hisId,
+            "longName" : longName,
+            "phoneNumber" : phoneNumber,
+            "location" : location,
+            "district" : district,
+            "address" : address])
     }
     
     init(hisId: String,
@@ -55,22 +101,19 @@ final class Ward: Model {
         return row
     }
     
-//    extension Ward: Preparation {
-//        /// Prepares a table/collection in the database
-//        /// for storing Posts
-//        static func prepare(_ database: Database) throws {
-//            try database.create(self) { builder in
-//                builder.id()
-//                builder.string(Post.Keys.content)
-//            }
-//        }
-//        
-//        /// Undoes what was done in `prepare`
-//        static func revert(_ database: Database) throws {
-//            try database.delete(self)
-//        }
-//    }
 }
 
+extension Ward: ResponseRepresentable { }
 
-
+extension Ward: JSONRepresentable {
+    func makeJSON() throws -> JSON {
+        var json = JSON()
+        try json.set("hisId", hisId)
+        try json.set("longName", longName)
+        try json.set("phoneNumber", phoneNumber)
+        try json.set("location",location)
+        try json.set("district",district)
+        try json.set("address",address)
+        return json
+    }
+}

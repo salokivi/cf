@@ -5,12 +5,15 @@
 //  Created by Elias Salokivi on 1.12.2017.
 //
 
+import Foundation
+import Vapor
 import Fluent
 import FluentProvider
 
 extension Ward: Preparation {
-    static func prepare(_ db: Database) throws {
-        try db.create(self) { wards in
+    
+    static func prepare(_ database: Database) throws {
+        try database.create(self) { wards in
             wards.id()
             wards.string("hisId")
             wards.string("longName")
@@ -21,7 +24,7 @@ extension Ward: Preparation {
         }
     }
     
-    static func revert(_ db: Database) throws {
-        try db.delete(self)
+    static func revert(_ database: Database) throws {
+        try database.delete(self)
     }
 }
