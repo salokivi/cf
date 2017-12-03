@@ -7,6 +7,18 @@ extension Droplet {
             try json.set("hello", "world")
             return json
         }
+        
+        get("ward") { req in
+            var json = JSON()
+            try json.set("ward", "set")
+            
+//            let ward =  Ward.init(hisId: "hisIdTest", longName: "longNameTest", phoneNumber: "phoneNumberTesti", location: "locationTest", district: "districtTest", address: "addressTest")
+
+//            try ward.save()
+//            print(ward.id) // the newly saved ward's id
+            
+            return json
+        }
 
         get("plaintext") { req in
             return "Hello, world"
